@@ -6,7 +6,7 @@
 /*   By: tfrances <tfrances@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/20 22:13:05 by tfrances          #+#    #+#             */
-/*   Updated: 2026/09/20 22:25:54 by tfrances         ###   ########.fr       */
+/*   Updated: 2026/09/23 21:47:35 by tfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@ int	ft_isdigit(char *c)
 {
 	int i;
 	int ret;
-	
+
 	i = 0;
 	ret = 0;
-	while(c[i])
+	while (c[i])
 	{
 		if (c[i] >= '0' && c[i] <= '9')
 			ret = 1;
@@ -27,5 +27,5 @@ int	ft_isdigit(char *c)
 			return (0);
 		i++;
 	}
-	return(ret);
+	return (ret);
 }

@@ -20,10 +20,10 @@ another dumb project from 42....
 - [X] Implement a custom Priority Queue (Heap) for FIFO/EDF scheduling.
 
 ### ⚙️ Phase 4: Memory Allocation & Thread Primitives Setup
-- [ ] Allocate memory (`malloc`) for coders and dongles arrays.
-- [ ] Initialize all `pthread_mutex_t` (dongles, printing, simulation state).
-- [ ] Initialize all `pthread_cond_t`.
-- [ ] Map coders to their respective left and right dongles (circular logic).
+- [X] Allocate memory (`malloc`) for coders and dongles arrays.
+- [X] Initialize all `pthread_mutex_t` (dongles, printing, simulation state).
+- [X] Initialize all `pthread_cond_t`.
+- [X] Map coders to their respective left and right dongles (circular logic).
 
 ### 🧠 Phase 5: Resource Arbitration (Scheduling)
 - [ ] Implement `fifo` scheduling logic (first come, first served).
@@ -62,11 +62,16 @@ time_to_compile
 time_to_debug
 time_to_refactor
 number_of_compiles_required
-dongle_cooldown scheduler
+dongle_cooldown 
+scheduler
 
 valgrind --tool=helgrind
 
 ------
+
+
+fifo = 0
+edf = 1
 
 schelduer = 1// Mode EDF
 
