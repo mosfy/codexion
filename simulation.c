@@ -6,7 +6,7 @@
 /*   By: tfrances <tfrances@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/24 03:46:47 by tfrances          #+#    #+#             */
-/*   Updated: 2026/09/24 23:02:19 by tfrances         ###   ########.fr       */
+/*   Updated: 2026/09/25 00:46:58 by tfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	simulation_init(char *argv[], t_simulation *sim)
 	sim->start_timestamp = get_time_in_ms();
 	pthread_mutex_init(&sim->mutex, NULL);
 	pthread_mutex_init(&sim->mutex_print, NULL);
-	pthread_mutex_init(&sim->mutex_print, NULL);
+	pthread_mutex_init(&sim->mutex_stop, NULL);
 	pthread_cond_init(&sim->condition_variable, NULL);
 	sim->coders = ft_calloc(sim->number_of_coders, sizeof(t_coder));
 	sim->dongles = ft_calloc(sim->number_of_coders, sizeof(t_dongle));

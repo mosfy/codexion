@@ -6,7 +6,7 @@
 /*   By: tfrances <tfrances@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/24 02:52:22 by tfrances          #+#    #+#             */
-/*   Updated: 2026/09/24 23:50:37 by tfrances         ###   ########.fr       */
+/*   Updated: 2026/09/25 00:44:24 by tfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,12 +120,9 @@ void	take_dongles(t_coder *coder)
 		now = get_time_in_ms();
 		if (can_compile(coder, now))
 		{
-			pthread_mutex_unlock(&coder->simulation->mutex);
-			printf("mutex unlock\n");
 			break ;
 		}
 	}
-	printf("yo\n");
 	if (!is_simulation_stopped(coder->simulation))
 	{
 		heap_pop(&coder->l_dongle->queue);
