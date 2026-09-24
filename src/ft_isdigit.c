@@ -6,7 +6,7 @@
 /*   By: tfrances <tfrances@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/20 22:13:05 by tfrances          #+#    #+#             */
-/*   Updated: 2026/09/23 21:47:35 by tfrances         ###   ########.fr       */
+/*   Updated: 2026/09/24 03:37:07 by tfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 int	ft_isdigit(char *c)
 {
-	int i;
-	int ret;
+	int	i;
+	int	ret;
 
 	i = 0;
 	ret = 0;

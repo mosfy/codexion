@@ -1,34 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init2.c                                            :+:      :+:    :+:   */
+/*   heap.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tfrances <tfrances@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/09/23 21:51:13 by tfrances          #+#    #+#             */
-/*   Updated: 2026/09/24 22:22:43 by tfrances         ###   ########.fr       */
+/*   Created: 2026/09/24 03:48:26 by tfrances          #+#    #+#             */
+/*   Updated: 2026/09/24 03:52:44 by tfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
 
-int	get_time_in_ms(void)
+t_heap_node	heap_pop(t_heap *heap)
 {
-	struct timeval	tv;
+	t_heap_node	empty_node;
+	t_heap_node	root;
 
-	gettimeofday(&tv, NULL);
-	return ((tv.tv_sec * 1000LL) + (tv.tv_usec / 1000LL));
+	empty_node = (t_heap_node){0, 0, 0};
+	if (heap->size == 0)
+		return (empty_node);
+	root = heap->tree[0];
+	heap->tree[0] = heap->tree[heap->size - 1];
+	heap->size--;
+	heap_sift_down(heap, 0);
+	return (root);
 }
 
-void	ft_usleep(long long time_in_ms, t_simulation *sim)
+void	heap_destroy(t_heap *heap)
 {
-	long long	start;
-
-	start = get_time_in_ms();
-	while (!is_simulation_stopped(sim))
+	if (!heap)
+		return ;
+	if (heap->tree)
 	{
-		if (get_time_in_ms() - start >= time_in_ms)
-			return ;
-		usleep(500);
+		free(heap->tree);
+		heap->tree = NULL;
 	}
 }

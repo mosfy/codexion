@@ -6,7 +6,7 @@
 /*   By: tfrances <tfrances@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/20 21:20:40 by tfrances          #+#    #+#             */
-/*   Updated: 2026/09/24 00:16:56 by tfrances         ###   ########.fr       */
+/*   Updated: 2026/09/24 07:23:28 by tfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,9 +97,33 @@ void	heap_sift_down(t_heap *heap, int i)
 int	main(int argc, char *argv[])
 {
 	t_simulation	*simulation;
+	int				rc;
+	int				i;
 
 	if (parser(argc, argv) != 0)
 		return (1);
-	simulation = NULL;
+	simulation = malloc(sizeof(t_simulation));
+	if (!simulation)
+		return (1);
 	simulation_init(argv, simulation);
+	i = 0;
+	while (i < simulation->number_of_coders)
+	{
+		rc = pthread_create(&simulation->coders[i].thread, NULL, coder_tread,
+				(void *)&simulation->coders[i]);
+		if (rc)
+		{
+			printf("ERROR; return (code from pthread_create() is %d\n", rc);
+			exit(-1);
+		}
+		i++;
+	}
+	i = 0;
+	while (i < simulation->number_of_coders)
+	{
+		pthread_join(simulation->coders[i].thread, NULL);
+		i++;
+	}
+	free(simulation);
+	return (0);
 }

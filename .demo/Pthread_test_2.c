@@ -6,10 +6,9 @@
 /*   By: tfrances <tfrances@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/23 21:47:14 by tfrances          #+#    #+#             */
-/*   Updated: 2026/09/23 21:47:17 by tfrances         ###   ########.fr       */
+/*   Updated: 2026/09/24 03:10:43 by tfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include <pthread.h>
 #include <stdio.h>
@@ -93,7 +92,7 @@ int	main(int argc, char *argv[])
 		sum = sum + t;
 		thread_data_array[t].thread_id = t;
 		thread_data_array[t].sum = sum;
-		thread_data_array[t].message = messages[t];
+		thread_data_array#include "header.h"[t].message = messages[t];
 		thread_data_array[t].shared = &data;
 		printf("Creating thread %d\n", t);
 		rc = pthread_create(&threads[t], NULL, PrintHello,

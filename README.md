@@ -69,6 +69,22 @@ valgrind --tool=helgrind
 
 ------
 
+int                     current_coder_id; 0 si libre
+
+
+Il vérifie que la simulation n'est pas arrêtée.
+
+Il prend ses deux dongles.
+
+Il compile (pendant time_to_compile).
+
+Il rend ses deux dongles.
+
+Il débogue (pendant time_to_debug).
+
+Il refactorise (pendant time_to_refactor).
+
+Il vérifie s'il a atteint son quota de compilations (number_of_compiles_required).
 
 fifo = 0
 edf = 1
