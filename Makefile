@@ -2,7 +2,7 @@ NAME = codexion
 OBJDIR = obj
 CC = cc
 RM = rm -f
-CFLAGS = -Wall -Wextra -Werror -g3 -pthread
+CFLAGS = -Wall -Wextra -Werror -g3 -pthread -fsanitize=thread
 
 SRC 		= main.c\
 			  init1.c\

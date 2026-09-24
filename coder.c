@@ -6,7 +6,7 @@
 /*   By: tfrances <tfrances@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/24 02:52:22 by tfrances          #+#    #+#             */
-/*   Updated: 2026/09/24 23:19:51 by tfrances         ###   ########.fr       */
+/*   Updated: 2026/09/24 23:50:37 by tfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,6 @@ void	*coder_tread(void *thread_coder)
 
 	coder = (t_coder *)thread_coder;
 	sim = coder->simulation;
-	printf("bon...\n");
 	while (!is_simulation_stopped(sim))
 	{
 		take_dongles(coder);
@@ -94,16 +93,10 @@ int	can_compile(t_coder *coder, long long now)
 	t_dongle	*l;
 	t_dongle	*r;
 
-	printf("bon...\n");
 	l = coder->l_dongle;
 	r = coder->r_dongle;
+	now++;
 	if (l->is_in_use || r->is_in_use)
-		return (0);
-	if (now < l->cooldown_timestamp || now < r->cooldown_timestamp)
-		return (0);
-	if (l->queue.size == 0 || l->queue.tree[0].coder_id != coder->id)
-		return (0);
-	if (r->queue.size == 0 || r->queue.tree[0].coder_id != coder->id)
 		return (0);
 	return (1);
 }
@@ -118,6 +111,7 @@ void	take_dongles(t_coder *coder)
 	node.deadline = coder->last_compile_time
 		+ coder->simulation->time_to_burnout;
 	pthread_mutex_lock(&coder->simulation->mutex);
+	printf("mutex lock\n");
 	heap_push(&coder->l_dongle->queue, node);
 	if (coder->l_dongle != coder->r_dongle)
 		heap_push(&coder->r_dongle->queue, node);
@@ -125,10 +119,13 @@ void	take_dongles(t_coder *coder)
 	{
 		now = get_time_in_ms();
 		if (can_compile(coder, now))
+		{
+			pthread_mutex_unlock(&coder->simulation->mutex);
+			printf("mutex unlock\n");
 			break ;
-		pthread_cond_wait(&coder->simulation->condition_variable,
-			&coder->simulation->mutex);
+		}
 	}
+	printf("yo\n");
 	if (!is_simulation_stopped(coder->simulation))
 	{
 		heap_pop(&coder->l_dongle->queue);
@@ -138,4 +135,5 @@ void	take_dongles(t_coder *coder)
 		coder->r_dongle->is_in_use = 1;
 	}
 	pthread_mutex_unlock(&coder->simulation->mutex);
+	printf("mutex unlock\n");
 }
