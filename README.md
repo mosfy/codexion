@@ -69,6 +69,8 @@ valgrind --tool=helgrind
 
 ------
 
+try valgrind --tool=helgrind ./codexion 5 3000 200 1 200 4 800 edf
+
 int                     current_coder_id; 0 si libre
 
 
