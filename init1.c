@@ -6,7 +6,7 @@
 /*   By: tfrances <tfrances@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/23 21:48:44 by tfrances          #+#    #+#             */
-/*   Updated: 2026/09/24 06:24:04 by tfrances         ###   ########.fr       */
+/*   Updated: 2026/09/24 22:40:39 by tfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,7 @@ void	init_dongles(t_simulation *sim)
 	i = 0;
 	while (i < sim->number_of_coders)
 	{
-		pthread_mutex_init(&sim->dongles[i].mutex_time, NULL);
-		pthread_mutex_init(&sim->dongles[i].mutex_used, NULL);
-		pthread_cond_init(&sim->dongles[i].condition_variable, NULL);
-		sim->dongles[i].is_in_use = 1;
+		sim->dongles[i].is_in_use = 0;
 		sim->dongles[i].cooldown_timestamp = 0;
 		heap_init(&sim->dongles[i].queue, sim->number_of_coders,
 			sim->scheduler_type);

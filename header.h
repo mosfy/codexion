@@ -6,7 +6,7 @@
 /*   By: tfrances <tfrances@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/20 21:16:12 by tfrances          #+#    #+#             */
-/*   Updated: 2026/09/24 22:19:23 by tfrances         ###   ########.fr       */
+/*   Updated: 2026/09/24 23:10:59 by tfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,6 @@ typedef struct s_heap
 
 typedef struct s_dongle
 {
-	pthread_mutex_t			mutex_time;
-	pthread_mutex_t			mutex_used;
-	pthread_cond_t			condition_variable;
 	long long				cooldown_timestamp;
 	int						is_in_use;
 	t_heap					queue;
@@ -69,8 +66,10 @@ typedef struct s_simulation
 	int						stop_flag;
 	int						scheduler_type;
 	long long				start_timestamp;
+	pthread_mutex_t			mutex;
 	pthread_mutex_t			mutex_print;
 	pthread_mutex_t			mutex_stop;
+	pthread_cond_t			condition_variable;
 	t_coder					*coders;
 	t_dongle				*dongles;
 }							t_simulation;
@@ -95,15 +94,8 @@ int							get_time_in_ms(void);
 void						*coder_tread(void *coder);
 void						clean_simulation(t_simulation *sim);
 void						heap_destroy(t_heap *heap);
-void						take_dongle(t_coder *coder);
+void						take_dongles(t_coder *coder);
 void						ft_usleep(long long time_in_ms, t_simulation *sim);
 int							is_simulation_stopped(t_simulation *sim);
 void						coder_compile(t_coder *coder);
-
-void						release_dongle(t_coder *coder);
-void						print_status(t_coder *coder, char *status);
-void						coder_debug_and_refactor(t_coder *coder);
-t_heap_node					create_coder_node(t_coder *coder);
-void						acquire_single_dongle(t_coder *coder,
-								t_dongle *dongle);
 void						heap_push(t_heap *heap, t_heap_node node);
