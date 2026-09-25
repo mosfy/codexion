@@ -6,7 +6,7 @@
 /*   By: tfrances <tfrances@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/20 21:20:40 by tfrances          #+#    #+#             */
-/*   Updated: 2026/09/25 01:45:28 by tfrances         ###   ########.fr       */
+/*   Updated: 2026/09/25 22:28:47 by tfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,79 @@ void	heap_sift_down(t_heap *heap, int i)
 	}
 }
 
+void	set_stop(t_simulation *sim)
+{
+	pthread_mutex_lock(&sim->mutex_stop);
+	sim->stop_flag = 1;
+	pthread_mutex_unlock(&sim->mutex_stop);
+}
+
+void	*monitor_thread(void *simulation)
+{
+	int				i;
+	int				j;
+	long long		last;
+	long long		now;
+	t_simulation	*sim;
+
+	sim = (t_simulation *)simulation;
+	while (!is_simulation_stopped(sim))
+	{
+		now = get_time_in_ms() - sim->start_timestamp;
+		i = 0;
+		j = 0;
+		while (i < sim->number_of_coders)
+		{
+			pthread_mutex_lock(&sim->mutex_time);
+			if (sim->coders[i].finished)
+			{
+				pthread_mutex_unlock(&sim->mutex_time);
+				i++;
+				j++;
+				continue ;
+			}
+			last = sim->coders[i].last_compile_time;
+			pthread_mutex_unlock(&sim->mutex_time);
+
+			if (now - last >= sim->time_to_burnout)
+			{
+				set_stop(sim);
+
+				pthread_mutex_lock(&sim->mutex_print);
+				printf("%lld %d burned out\n",
+					now, sim->coders[i].id);
+				pthread_mutex_unlock(&sim->mutex_print);
+
+				pthread_mutex_lock(&sim->mutex);
+				pthread_cond_broadcast(&sim->condition_variable);
+				pthread_mutex_unlock(&sim->mutex);
+
+				return (NULL);
+			}
+			i++;
+		}
+		if (j == sim->number_of_coders)
+		{
+			set_stop(sim);
+		}
+		usleep(1000);
+	}
+	return (NULL);
+}
+
+void	pthread_monitor_init(t_simulation *simulation)
+{
+	int	rc;
+
+	rc = pthread_create(&simulation->thread, NULL, monitor_thread,
+			(void *)simulation);
+	if (rc)
+	{
+		printf("ERROR; return (code from pthread_create() is %d\n", rc);
+		exit(-1);
+	}
+}
+
 int	main(int argc, char *argv[])
 {
 	t_simulation	*simulation;
@@ -115,12 +188,14 @@ int	main(int argc, char *argv[])
 		}
 		i++;
 	}
+	pthread_monitor_init(simulation);
 	i = 0;
 	while (i < simulation->number_of_coders)
 	{
 		pthread_join(simulation->coders[i].thread, NULL);
 		i++;
 	}
+	pthread_join(simulation->thread, NULL);
 	free(simulation);
 	return (0);
 }

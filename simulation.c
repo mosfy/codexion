@@ -6,7 +6,7 @@
 /*   By: tfrances <tfrances@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/24 03:46:47 by tfrances          #+#    #+#             */
-/*   Updated: 2026/09/25 00:46:58 by tfrances         ###   ########.fr       */
+/*   Updated: 2026/09/25 22:21:03 by tfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ void	simulation_init(char *argv[], t_simulation *sim)
 	sim->stop_flag = 0;
 	sim->start_timestamp = get_time_in_ms();
 	pthread_mutex_init(&sim->mutex, NULL);
+	pthread_mutex_init(&sim->mutex_time, NULL);
 	pthread_mutex_init(&sim->mutex_print, NULL);
 	pthread_mutex_init(&sim->mutex_stop, NULL);
 	pthread_cond_init(&sim->condition_variable, NULL);

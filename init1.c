@@ -6,7 +6,7 @@
 /*   By: tfrances <tfrances@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/23 21:48:44 by tfrances          #+#    #+#             */
-/*   Updated: 2026/09/24 22:40:39 by tfrances         ###   ########.fr       */
+/*   Updated: 2026/09/25 21:10:22 by tfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,8 @@ void	init_coders(t_simulation *sim)
 	{
 		sim->coders[i].id = i + 1;
 		sim->coders[i].compile_count = 0;
-		sim->coders[i].last_compile_time = sim->start_timestamp;
+		sim->coders[i].last_compile_time = 0;
+		sim->coders[i].finished = 0;
 		sim->coders[i].simulation = sim;
 		sim->coders[i].l_dongle = &sim->dongles[i];
 		sim->coders[i].r_dongle = &sim->dongles[(i + 1)

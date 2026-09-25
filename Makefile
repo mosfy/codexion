@@ -6,7 +6,7 @@ CFLAGS = -Wall -Wextra -Werror -g3 -pthread
 
 SRC 		= main.c\
 			  init1.c\
-			  init2.c\
+			  time.c\
 			  coder.c\
 			  simulation.c\
 			  heap.c\

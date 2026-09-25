@@ -88,8 +88,7 @@ Il refactorise (pendant time_to_refactor).
 
 Il vérifie s'il a atteint son quota de compilations (number_of_compiles_required).
 
-fifo = 0
-edf = 1
+
 
 schelduer = 1// Mode EDF
 
@@ -115,9 +114,21 @@ on peut passer de 10 a 50 fois plus lent
 - Pourquoi ?
 tout simplement car valgrind execute le programe de facon virtuel pour pouvoir avoir acces tres facilment a la memoir contrairment a un proesseur physique ou cela est tres dure. De plus --tool=helgrind verifie que chaque varibale n est pas utilise par un autre thread ce qui est extrement gourmand
 
+diff entre brodcat et simulation brodcast envois le signal a tout les mutex wait qu il doivent se reveiller et revenir la oui il etait avors que signal le fais qu a un seul selon le schelduling wikipedia "Dans les systèmes d'exploitation, l'ordonnanceur est le composant du noyau du système d'exploitation choisissant l'ordre d'exécution des processus sur les processeurs d'un ordinateur. En anglais, l'ordonnanceur est appelé schedule"
+
+ptit probleme patch avec valgrind --tool=heldgrind, avec un mutex_wait qui s executais lorsque le mutex etait unlock donc forcement ca bug dubois
+
 Mets les sources qui t'ont aide a comprendre.
 https://hpc-tutorials.llnl.gov/posix/#table-of-contents
+thread explication
+
+https://fr.wikipedia.org/wiki/Ordonnancement_(informatique)
+wiki sur le schedule 
+
+man pthread_cond_broadcast 
+
+https://valgrind.org/docs/manual/hg-manual.html#hg-manual.api-checks
+dubious.
+
 abosc
 ancourti
-
-
