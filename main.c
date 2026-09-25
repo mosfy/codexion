@@ -6,7 +6,7 @@
 /*   By: tfrances <tfrances@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/20 21:20:40 by tfrances          #+#    #+#             */
-/*   Updated: 2026/09/24 07:23:28 by tfrances         ###   ########.fr       */
+/*   Updated: 2026/09/25 01:45:28 by tfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,11 @@ int	is_higher_priority(t_heap_node a, t_heap_node b, int scheduler)
 			return (0);
 		return (a.coder_id < b.coder_id);
 	}
-	else
-	{
-		if (a.arrival_time < b.arrival_time)
-			return (1);
-		if (a.arrival_time > b.arrival_time)
-			return (0);
-		return (a.coder_id < b.coder_id);
-	}
+	if (a.arrival_time < b.arrival_time)
+		return (1);
+	if (a.arrival_time > b.arrival_time)
+		return (0);
+	return (a.coder_id < b.coder_id);
 }
 
 void	heap_init(t_heap *heap, int capacity, int scheduler)

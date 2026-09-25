@@ -6,7 +6,7 @@
 /*   By: tfrances <tfrances@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/24 02:52:22 by tfrances          #+#    #+#             */
-/*   Updated: 2026/09/25 00:44:24 by tfrances         ###   ########.fr       */
+/*   Updated: 2026/09/25 03:15:37 by tfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,28 +101,36 @@ int	can_compile(t_coder *coder, long long now)
 	return (1);
 }
 
+void	cond_timedwait_ms(pthread_cond_t *cond, pthread_mutex_t *mutex, long ms)
+{
+	struct timespec	ts;
+	struct timeval	tv;
+	long long		nsec;
+
+	gettimeofday(&tv, NULL);
+	nsec = (tv.tv_usec * 1000LL) + (ms * 1000000LL);
+	ts.tv_sec = tv.tv_sec + (nsec / 1000000000LL);
+	ts.tv_nsec = nsec % 1000000000LL;
+	pthread_cond_timedwait(cond, mutex, &ts);
+}
+
 void	take_dongles(t_coder *coder)
 {
 	t_heap_node	node;
-	long long	now;
 
 	node.coder_id = coder->id;
 	node.arrival_time = get_time_in_ms();
-	node.deadline = coder->last_compile_time
-		+ coder->simulation->time_to_burnout;
 	pthread_mutex_lock(&coder->simulation->mutex);
-	printf("mutex lock\n");
+	node.deadline = coder->last_compile_time
+	+ coder->simulation->time_to_burnout;
+	// printf("mutex lock\n");
 	heap_push(&coder->l_dongle->queue, node);
 	if (coder->l_dongle != coder->r_dongle)
 		heap_push(&coder->r_dongle->queue, node);
-	while (!is_simulation_stopped(coder->simulation))
-	{
-		now = get_time_in_ms();
-		if (can_compile(coder, now))
-		{
-			break ;
-		}
-	}
+	while (!is_simulation_stopped(coder->simulation) && !can_compile(coder,
+			get_time_in_ms()))
+		cond_timedwait_ms(&coder->simulation->condition_variable,
+			&coder->simulation->mutex, 1);
 	if (!is_simulation_stopped(coder->simulation))
 	{
 		heap_pop(&coder->l_dongle->queue);
@@ -132,5 +140,5 @@ void	take_dongles(t_coder *coder)
 		coder->r_dongle->is_in_use = 1;
 	}
 	pthread_mutex_unlock(&coder->simulation->mutex);
-	printf("mutex unlock\n");
+	// printf("mutex unlock\n");
 }

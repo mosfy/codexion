@@ -6,9 +6,12 @@
 /*   By: tfrances <tfrances@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/20 21:16:12 by tfrances          #+#    #+#             */
-/*   Updated: 2026/09/24 23:10:59 by tfrances         ###   ########.fr       */
+/*   Updated: 2026/09/25 02:06:59 by tfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#ifndef HEADER
+# define HEADER
 
 #include <limits.h>
 #include <pthread.h>
@@ -93,9 +96,10 @@ void						heap_sift_down(t_heap *heap, int i);
 int							get_time_in_ms(void);
 void						*coder_tread(void *coder);
 void						clean_simulation(t_simulation *sim);
-void						heap_destroy(t_heap *heap);
 void						take_dongles(t_coder *coder);
 void						ft_usleep(long long time_in_ms, t_simulation *sim);
 int							is_simulation_stopped(t_simulation *sim);
 void						coder_compile(t_coder *coder);
 void						heap_push(t_heap *heap, t_heap_node node);
+
+#endif
